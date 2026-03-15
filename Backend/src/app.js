@@ -14,8 +14,9 @@ app.use(cors({
 
 
 const router = require('./routes/auth.routes');
-
+const interviewRouter = require('./routes/interview.routes')
 
 app.use('/api/auth', router);
+app.use('/api/interview', interviewRouter);
 
 module.exports = app;
