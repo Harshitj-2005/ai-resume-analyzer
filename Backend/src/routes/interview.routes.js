@@ -1,12 +1,26 @@
-const express = require('express');
-const authmiddleware = require('../middleware/auth.middleware');
-const generateInterviewReportcontroller  = require('../controllers/interview.controller');
-const upload = require('../middleware/file.middleware');
+const express = require("express")
+const authMiddleware = require("../middleware/auth.middleware")
+const interviewController = require("../controllers/interview.controller")
+const upload = require("../middleware/file.middleware")
 
-const interviewRouter = express.Router();
-
-
-interviewRouter.post('/',authmiddleware.authUser, upload.single('resume'), generateInterviewReportcontroller);
+const interviewRouter = express.Router()
 
 
-module.exports = interviewRouter;
+
+
+interviewRouter.post("/", authMiddleware.authUser, upload.single("resume"), interviewController.generateInterviewReportcontroller)
+
+
+interviewRouter.get("/report/:interviewId", authMiddleware.authUser, interviewController.getInterviewReportByIdController)
+
+
+
+interviewRouter.get("/", authMiddleware.authUser, interviewController.getAllInterviewReportsController)
+
+
+
+interviewRouter.post("/resume/pdf/:interviewReportId", authMiddleware.authUser, interviewController.generateResumePdfController)
+
+
+
+module.exports = interviewRouter

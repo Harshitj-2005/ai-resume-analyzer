@@ -1,10 +1,13 @@
 import { useContext } from "react";
 import { Authcontext } from "../auth.context";
 import {register, login, logout, getme} from "../services/api.auth"
+import { InterviewContext } from "../../interview/interview.context";
 
 
 export const useAuth = () =>{
     const context = useContext(Authcontext)
+
+    const { setreport, setreports } = useContext(InterviewContext);
 
     const {user, setuser, loading, setloading} = context
 
@@ -14,6 +17,8 @@ export const useAuth = () =>{
         try{
         const data = await login({email, password});
         setuser(data.user);
+        setreport(null);
+        setreports([]);
         }catch(err){
 
         }finally{
@@ -37,17 +42,20 @@ export const useAuth = () =>{
 
     //logout hook
     const handlelogout = async () => {
-        setloading(true)
-        try{
-        const data = await logout();
+    setloading(true)
+    try{
+        await logout();
         setuser(null);
-        }catch(err){
+        setreport(null);
+        setreports([]);
 
-        }finally{
+    }catch(err){
+
+    }finally{
         setloading(false)
-        }
     }
+}
 
 
-    return {user, loading, handlelogin, handleRegister, handlelogout}
+    return {user, loading, handlelogin, handleRegister, handlelogout, setreport, setreports }
 }
